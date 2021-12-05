@@ -1,0 +1,20 @@
+
+/* Login form */
+
+.login-form .ui-input-btn {
+    background-color: black;
+    color: yellow;
+}
+.navbar {
+    background-color: black !important;
+    color: yellow;
+}
+.navbar a.navbar-brand  {
+    color: yellow;
+    font-size: larger;
+    font-weight: bold;
+}
+.navbar .nav-item a:hover  {
+    color: yellow !important;
+    text-decoration: none !important;
+}

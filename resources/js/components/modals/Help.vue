@@ -2,7 +2,7 @@
     <div
     @click="checkHelp">
         <div class="position-fixed w-100 h-100 help-bg " ref="help_bg" style="top: 0; left: 0; background-color: #1a202c; z-index:1000; opacity: 0;"
-             v-if="help_text !=''"/>
+             v-if="show_help"/>
         <div class="position-fixed " ref="help_box" style="bottom: -30px; right: 0; z-index: 9999;">
             <v-autocomplete
                 v-model="current_help"
@@ -13,7 +13,6 @@
                 item-text="name"
                 item-value="name"
                 class="help-help-bar"
-                style="width: 400px;"
                 @change="tryhelp"
                 @focus="help_step = 2; help(2)"
             >
@@ -35,7 +34,7 @@
             <v-card :class="`position-fixed rounded pa-2 bg-dark tooltip-card ${hide_tooltip ? '' : 'visible'}`"
                     @click="hide_tooltip = true"
                     v-if="current_help ==='Базове'"
-                    ref="help_tooltip" style=" z-index:1002; color:white;right: 450px; bottom: 0; max-width: 400px; opacity: 0">
+                    ref="help_tooltip" style=" z-index:1002; color:white; opacity: 0">
                 <v-card-title v-html="help_text">{{help_text}}</v-card-title>
             </v-card>
         </div>
@@ -53,6 +52,7 @@ export default {
             ls: window.localStorage,
             help_text: '',
             hide_tooltip: false,
+            show_help: true,
             help_articles: [
                 { header: 'Ставки' },
                 { name: 'Перша ставка', description: 'Вітаємо у світі бетінгу!', group: 'Ставки', avatar: 'https://eitrawmaterials.eu/wp-content/uploads/2016/09/person-icon.png'},
@@ -65,16 +65,21 @@ export default {
     },
     methods: {
         load() {
-            let help = 0
+            let help = this.ls.getItem('help')
             console.log(this.current_help)
             if(help != 1) {
                 this.current_help = 'Базове'
                 this.help_step = 1
+                this.ls.setItem('help', '1')
                 this.help();
+            }
+            else {
+                this.show_help = false
             }
         },
         help() {
-            console.log('dick')
+            console.log(this.current_help)
+            console.log(this.help_step)
             switch (this.current_help) {
                 case 'Базове':
                     switch(this.help_step) {
@@ -102,6 +107,7 @@ export default {
             }
         },
         highlight(ref) {
+            console.log('higlight:'+ref)
             this.$refs[ref].style.zIndex = '1001'
             this.$refs[ref].style.backgroundColor = 'white'
             this.$refs['help_bg'].classList.add('visible')
@@ -140,5 +146,19 @@ export default {
     }
     .tooltip-card {
         transition: 2s;
+        right: auto; left: auto; top: 50px; max-width: 300px;
+    }
+    .help-help-bar {
+        width: 300px;
+    }
+
+    @media screen and (min-width: 800px) {
+
+        .tooltip-card {
+            right: 500px; left: auto; top: auto;bottom: 0; max-width: 400px;
+        }
+        .help-help-bar {
+            width: 400px;
+        }
     }
 </style>

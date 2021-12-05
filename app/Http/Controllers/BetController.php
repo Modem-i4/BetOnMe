@@ -19,7 +19,6 @@ class BetController extends Controller
     {
         app(EventController::class)->changeLimit();
         app(UserController::class)->changeBalance();
-        app(UserController::class)->progress(2);
         return $this->repos->add();
     }
 }
